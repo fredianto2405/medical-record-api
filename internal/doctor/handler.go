@@ -20,7 +20,7 @@ func NewHandler(service *Service) *Handler {
 func (h *Handler) GetDoctors(c *gin.Context) {
 	search := c.DefaultQuery("search", "")
 
-	isPaginated := c.DefaultQuery("isPaginated", "false") == "true"
+	isPaginated := c.DefaultQuery("pagination", "false") == "true"
 	if !isPaginated {
 		doctors, err := h.service.GetAll(search)
 		if err != nil {

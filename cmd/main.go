@@ -10,9 +10,9 @@ import (
 )
 
 func main() {
-	err := godotenv.Load(".env")
+	err := godotenv.Load("env")
 	if err != nil {
-		log.Fatal("Error load env file")
+		log.Fatal("Error load env file:" + err.Error())
 	}
 
 	db := config.NewDB()

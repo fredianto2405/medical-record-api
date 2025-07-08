@@ -6,6 +6,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"medical-record-api/internal/auth"
 	"medical-record-api/internal/doctor"
+	medicineHandler "medical-record-api/internal/medicine/handler"
+	medicineRepo "medical-record-api/internal/medicine/repository"
+	medicineService "medical-record-api/internal/medicine/service"
 	"medical-record-api/internal/nurse"
 	"medical-record-api/internal/specialization"
 	"medical-record-api/pkg/errors"
@@ -58,6 +61,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	nurseHandler := nurse.NewHandler(nurseService)
 	nurseGroup := r.Group("/api/v1/nurses")
 	RegisterNurseRoutes(nurseGroup, nurseHandler)
+
+	// medicine routes
+	medicineGroup := r.Group("api/v1/medicines")
+	unitRepo := medicineRepo.NewUnitRepository(db)
+	unitService := medicineService.NewUnitService(unitRepo)
+	unitHandler := medicineHandler.NewUnitHandler(unitService)
+	RegisterUnitRoutes(medicineGroup, unitHandler)
 
 	return r
 }
