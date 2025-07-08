@@ -1,0 +1,8 @@
+package dto
+
+type PaymentStatusDTO struct {
+	ID          string `json:"id" db:"id"`
+	Name        string `json:"name" db:"name"`
+	Description string `json:"description" db:"description"`
+	SortNumber  int    `json:"sort_number" db:"sort_number"`
+}
