@@ -35,6 +35,7 @@ func (s *UnitService) Create(request *model.UnitRequest) (*model.UnitDTO, error)
 
 func (s *UnitService) Update(id string, request *model.UnitRequest) (*model.UnitDTO, error) {
 	entity := mapper.MapToUnitEntity(request)
+	entity.ID = id
 
 	updatedEntity, err := s.repo.Update(entity)
 	if err != nil {

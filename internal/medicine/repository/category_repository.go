@@ -80,7 +80,7 @@ func (r *CategoryRepository) FindAllPaginated(page, limit int, search string) ([
 
 	baseQuery := `where deleted_at isnull and name ilike $1`
 
-	countQuery := `select count(0) from emr_medicine.medicineCategories ` + baseQuery
+	countQuery := `select count(0) from emr_medicine.categories ` + baseQuery
 	err := r.db.Get(&total, countQuery, searchPattern)
 	if err != nil {
 		return nil, 0, err
@@ -88,7 +88,7 @@ func (r *CategoryRepository) FindAllPaginated(page, limit int, search string) ([
 
 	offset := (page - 1) * limit
 	dataQuery := `select id, name
-		from emr_medicine.medicineCategories
+		from emr_medicine.categories
 		` + baseQuery + `
 		order by name asc
 		limit $2 offset $3`

@@ -6,9 +6,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"medical-record-api/internal/auth"
 	"medical-record-api/internal/doctor"
-	medicineHandler "medical-record-api/internal/medicine/handler"
-	medicineRepo "medical-record-api/internal/medicine/repository"
-	medicineService "medical-record-api/internal/medicine/service"
+	mdcHandler "medical-record-api/internal/medicine/handler"
+	mdcRepo "medical-record-api/internal/medicine/repository"
+	mdcService "medical-record-api/internal/medicine/service"
 	"medical-record-api/internal/nurse"
 	"medical-record-api/internal/specialization"
 	"medical-record-api/pkg/errors"
@@ -64,10 +64,21 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 
 	// medicine routes
 	medicineGroup := r.Group("api/v1/medicines")
-	unitRepo := medicineRepo.NewUnitRepository(db)
-	unitService := medicineService.NewUnitService(unitRepo)
-	unitHandler := medicineHandler.NewUnitHandler(unitService)
+
+	unitRepo := mdcRepo.NewUnitRepository(db)
+	unitService := mdcService.NewUnitService(unitRepo)
+	unitHandler := mdcHandler.NewUnitHandler(unitService)
 	RegisterUnitRoutes(medicineGroup, unitHandler)
+
+	categoryRepo := mdcRepo.NewCategoryRepository(db)
+	categoryService := mdcService.NewCategoryService(categoryRepo)
+	categoryHandler := mdcHandler.NewCategoryHandler(categoryService)
+	RegisterCategoryRoutes(medicineGroup, categoryHandler)
+
+	medicineRepo := mdcRepo.NewRepository(db)
+	medicineService := mdcService.NewService(medicineRepo)
+	medicineHandler := mdcHandler.NewHandler(medicineService)
+	RegisterMedicineRoutes(medicineGroup, medicineHandler)
 
 	return r
 }
