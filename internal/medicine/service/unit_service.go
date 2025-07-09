@@ -45,6 +45,6 @@ func (s *UnitService) Update(id string, request *model.UnitRequest) (*model.Unit
 	return mapper.MapToUnitDTO(updatedEntity), nil
 }
 
-func (s UnitService) Delete(id string) error {
+func (s *UnitService) Delete(id string) error {
 	return s.repo.Delete(id)
 }

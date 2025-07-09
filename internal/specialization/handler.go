@@ -20,7 +20,7 @@ func NewHandler(service *Service) *Handler {
 func (h *Handler) GetSpecializations(c *gin.Context) {
 	search := c.DefaultQuery("search", "")
 
-	isPaginated := c.DefaultQuery("isPaginated", "false") == "true"
+	isPaginated := c.DefaultQuery("pagination", "false") == "true"
 	if !isPaginated {
 		specializations, err := h.service.GetAll(search)
 		if err != nil {
