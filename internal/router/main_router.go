@@ -96,5 +96,10 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	emergencyContactHandler := ptHandler.NewEmergencyContactHandler(emergencyContactService)
 	RegisterEmergencyContactRoutes(patientGroup, emergencyContactHandler)
 
+	insurancePatientRepo := ptRepo.NewInsurancePatientRepository(db)
+	insurancePatientService := ptService.NewInsurancePatientService(insurancePatientRepo)
+	insurancePatientHandler := ptHandler.NewInsurancePatientHandler(insurancePatientService)
+	RegisterInsurancePatientRoutes(patientGroup, insurancePatientHandler)
+
 	return r
 }
