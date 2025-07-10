@@ -85,11 +85,16 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 
 	// patient routes
 	patientGroup := r.Group("/api/v1/patients")
-	
+
 	patientRepo := ptRepo.NewRepository(db)
 	patientService := ptService.NewService(patientRepo)
 	patientHandler := ptHandler.NewHandler(patientService)
 	RegisterPatientRoutes(patientGroup, patientHandler)
+
+	emergencyContactRepo := ptRepo.NewEmergencyContactRepository(db)
+	emergencyContactService := ptService.NewEmergencyContactService(emergencyContactRepo)
+	emergencyContactHandler := ptHandler.NewEmergencyContactHandler(emergencyContactService)
+	RegisterEmergencyContactRoutes(patientGroup, emergencyContactHandler)
 
 	return r
 }
