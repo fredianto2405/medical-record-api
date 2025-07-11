@@ -1,0 +1,1 @@
+DROP TABLE emr_patient.emergency_contact;

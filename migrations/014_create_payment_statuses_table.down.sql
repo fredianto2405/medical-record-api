@@ -1,0 +1,1 @@
+DROP TABLE emr_payment.payment_statuses;

@@ -1,0 +1,1 @@
+DROP TABLE emr_patient.insurance_patient;

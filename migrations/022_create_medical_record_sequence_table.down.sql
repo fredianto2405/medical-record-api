@@ -1,0 +1,1 @@
+DROP TABLE emr_patient.medical_record_sequence;
