@@ -15,6 +15,7 @@ import (
 	ptRepo "medical-record-api/internal/patient/repository"
 	ptService "medical-record-api/internal/patient/service"
 	"medical-record-api/internal/specialization"
+	"medical-record-api/internal/treatment"
 	"medical-record-api/pkg/errors"
 	"time"
 )
@@ -108,6 +109,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	insurancePatientService := ptService.NewInsurancePatientService(insurancePatientRepo)
 	insurancePatientHandler := ptHandler.NewInsurancePatientHandler(insurancePatientService)
 	RegisterInsurancePatientRoutes(patientGroup, insurancePatientHandler)
+
+	// treatment routes
+	treatmentGroup := r.Group("/api/v1/treatments")
+	treatmentRepo := treatment.NewRepository(db)
+	treatmentService := treatment.NewService(treatmentRepo)
+	treatmentHandler := treatment.NewHandler(treatmentService)
+	RegisterTreatmentRoutes(treatmentGroup, treatmentHandler)
 
 	return r
 }
