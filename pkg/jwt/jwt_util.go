@@ -1,7 +1,10 @@
 package jwt
 
 import (
+	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"medical-record-api/internal/constant"
 	"os"
 	"time"
 )
@@ -31,21 +34,36 @@ func GenerateJWT(id, email, role string) (string, error) {
 	return token.SignedString([]byte(secret))
 }
 
-func ValidateJWT(tokenString string) (*Claims, error) {
+func ValidateJWT(tokenStr string) (*Claims, error) {
 	secret := os.Getenv("JWT_SECRET")
 
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New(constant.MsgUnexpectedSigningMethod)
+		}
 		return []byte(secret), nil
 	})
-
 	if err != nil {
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			return nil, errors.New(constant.MsgInvalidToken)
+		}
 		return nil, err
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
-		return nil, jwt.ErrTokenInvalidClaims
+		return nil, errors.New(constant.MsgInvalidToken)
 	}
 
 	return claims, nil
+}
+
+func GetUserClaims(c *gin.Context) (*Claims, bool) {
+	user, exists := c.Get("user")
+	if !exists {
+		return nil, false
+	}
+
+	claims, ok := user.(*Claims)
+	return claims, ok
 }

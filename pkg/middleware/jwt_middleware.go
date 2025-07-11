@@ -12,27 +12,22 @@ import (
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
+		if !strings.HasPrefix(authHeader, "Bearer ") {
 			response.Respond(c, http.StatusUnauthorized, false, constant.MsgAuthHeaderMissing, nil, nil)
 			c.Abort()
 			return
 		}
 
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			response.Respond(c, http.StatusUnauthorized, false, constant.MsgInvalidAuthHeader, nil, nil)
-			c.Abort()
-			return
-		}
-
-		claims, err := jwt.ValidateJWT(parts[1])
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		claims, err := jwt.ValidateJWT(tokenStr)
 		if err != nil {
-			response.Respond(c, http.StatusUnauthorized, false, constant.MsgInvalidToken, nil, nil)
+			response.Respond(c, http.StatusUnauthorized, false, err.Error(), nil, nil)
 			c.Abort()
 			return
 		}
 
-		c.Set("email", claims.Email)
+		// Inject claims into context
+		c.Set("user", claims)
 		c.Next()
 	}
 }

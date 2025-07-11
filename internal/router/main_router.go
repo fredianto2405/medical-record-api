@@ -9,6 +9,7 @@ import (
 	mdcHandler "medical-record-api/internal/medicine/handler"
 	mdcRepo "medical-record-api/internal/medicine/repository"
 	mdcService "medical-record-api/internal/medicine/service"
+	"medical-record-api/internal/menu"
 	"medical-record-api/internal/nurse"
 	ptHandler "medical-record-api/internal/patient/handler"
 	ptRepo "medical-record-api/internal/patient/repository"
@@ -43,6 +44,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	authHandler := auth.NewHandler(authService)
 	authGroup := r.Group("/api/v1/auth")
 	RegisterAuthRoutes(authGroup, authHandler)
+
+	// menu routes
+	menuRepo := menu.NewRepository(db)
+	menuService := menu.NewService(menuRepo)
+	menuHandler := menu.NewHandler(menuService)
+	menuGroup := r.Group("api/v1/menus")
+	RegisterMenuRoutes(menuGroup, menuHandler)
 
 	// specialization routes
 	specializationRepo := specialization.NewRepository(db)
