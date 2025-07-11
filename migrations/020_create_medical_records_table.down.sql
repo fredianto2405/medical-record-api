@@ -1,0 +1,1 @@
+DROP TABLE emr_core.medical_records;
