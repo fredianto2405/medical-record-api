@@ -127,5 +127,12 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	insuranceHandler := payHandler.NewInsuranceHandler(insuranceService)
 	RegisterInsuranceRoutes(insuranceGroup, insuranceHandler)
 
+	// payment routes
+	paymentGroup := r.Group("/api/v1/payment")
+	paymentRepo := payRepo.NewRepository(db)
+	paymentService := payService.NewService(paymentRepo)
+	paymentHandler := payHandler.NewHandler(paymentService)
+	RegisterPaymentRoutes(paymentGroup, paymentHandler)
+
 	return r
 }
