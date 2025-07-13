@@ -17,7 +17,8 @@
 *.swp
 
 # environment
-.env
+.env.prod
+.env.dev
 
 # logs
 *.log

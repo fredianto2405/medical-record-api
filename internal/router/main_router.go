@@ -6,14 +6,17 @@ import (
 	"github.com/jmoiron/sqlx"
 	"medical-record-api/internal/auth"
 	"medical-record-api/internal/doctor"
-	mdcHandler "medical-record-api/internal/medicine/handler"
-	mdcRepo "medical-record-api/internal/medicine/repository"
-	mdcService "medical-record-api/internal/medicine/service"
+	medHandler "medical-record-api/internal/medicine/handler"
+	medRepo "medical-record-api/internal/medicine/repository"
+	medService "medical-record-api/internal/medicine/service"
 	"medical-record-api/internal/menu"
 	"medical-record-api/internal/nurse"
-	ptHandler "medical-record-api/internal/patient/handler"
-	ptRepo "medical-record-api/internal/patient/repository"
-	ptService "medical-record-api/internal/patient/service"
+	patHandler "medical-record-api/internal/patient/handler"
+	patRepo "medical-record-api/internal/patient/repository"
+	patService "medical-record-api/internal/patient/service"
+	payHandler "medical-record-api/internal/payment/handler"
+	payRepo "medical-record-api/internal/payment/repository"
+	payService "medical-record-api/internal/payment/service"
 	"medical-record-api/internal/specialization"
 	"medical-record-api/internal/treatment"
 	"medical-record-api/pkg/errors"
@@ -77,37 +80,37 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	// medicine routes
 	medicineGroup := r.Group("api/v1/medicines")
 
-	unitRepo := mdcRepo.NewUnitRepository(db)
-	unitService := mdcService.NewUnitService(unitRepo)
-	unitHandler := mdcHandler.NewUnitHandler(unitService)
+	unitRepo := medRepo.NewUnitRepository(db)
+	unitService := medService.NewUnitService(unitRepo)
+	unitHandler := medHandler.NewUnitHandler(unitService)
 	RegisterUnitRoutes(medicineGroup, unitHandler)
 
-	categoryRepo := mdcRepo.NewCategoryRepository(db)
-	categoryService := mdcService.NewCategoryService(categoryRepo)
-	categoryHandler := mdcHandler.NewCategoryHandler(categoryService)
+	categoryRepo := medRepo.NewCategoryRepository(db)
+	categoryService := medService.NewCategoryService(categoryRepo)
+	categoryHandler := medHandler.NewCategoryHandler(categoryService)
 	RegisterCategoryRoutes(medicineGroup, categoryHandler)
 
-	medicineRepo := mdcRepo.NewRepository(db)
-	medicineService := mdcService.NewService(medicineRepo)
-	medicineHandler := mdcHandler.NewHandler(medicineService)
+	medicineRepo := medRepo.NewRepository(db)
+	medicineService := medService.NewService(medicineRepo)
+	medicineHandler := medHandler.NewHandler(medicineService)
 	RegisterMedicineRoutes(medicineGroup, medicineHandler)
 
 	// patient routes
 	patientGroup := r.Group("/api/v1/patients")
 
-	patientRepo := ptRepo.NewRepository(db)
-	patientService := ptService.NewService(patientRepo)
-	patientHandler := ptHandler.NewHandler(patientService)
+	patientRepo := patRepo.NewRepository(db)
+	patientService := patService.NewService(patientRepo)
+	patientHandler := patHandler.NewHandler(patientService)
 	RegisterPatientRoutes(patientGroup, patientHandler)
 
-	emergencyContactRepo := ptRepo.NewEmergencyContactRepository(db)
-	emergencyContactService := ptService.NewEmergencyContactService(emergencyContactRepo)
-	emergencyContactHandler := ptHandler.NewEmergencyContactHandler(emergencyContactService)
+	emergencyContactRepo := patRepo.NewEmergencyContactRepository(db)
+	emergencyContactService := patService.NewEmergencyContactService(emergencyContactRepo)
+	emergencyContactHandler := patHandler.NewEmergencyContactHandler(emergencyContactService)
 	RegisterEmergencyContactRoutes(patientGroup, emergencyContactHandler)
 
-	insurancePatientRepo := ptRepo.NewInsurancePatientRepository(db)
-	insurancePatientService := ptService.NewInsurancePatientService(insurancePatientRepo)
-	insurancePatientHandler := ptHandler.NewInsurancePatientHandler(insurancePatientService)
+	insurancePatientRepo := patRepo.NewInsurancePatientRepository(db)
+	insurancePatientService := patService.NewInsurancePatientService(insurancePatientRepo)
+	insurancePatientHandler := patHandler.NewInsurancePatientHandler(insurancePatientService)
 	RegisterInsurancePatientRoutes(patientGroup, insurancePatientHandler)
 
 	// treatment routes
@@ -116,6 +119,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	treatmentService := treatment.NewService(treatmentRepo)
 	treatmentHandler := treatment.NewHandler(treatmentService)
 	RegisterTreatmentRoutes(treatmentGroup, treatmentHandler)
+
+	// insurance routes
+	insuranceGroup := r.Group("/api/v1/insurances")
+	insuranceRepo := payRepo.NewInsuranceRepository(db)
+	insuranceService := payService.NewInsuranceService(insuranceRepo)
+	insuranceHandler := payHandler.NewInsuranceHandler(insuranceService)
+	RegisterInsuranceRoutes(insuranceGroup, insuranceHandler)
 
 	return r
 }

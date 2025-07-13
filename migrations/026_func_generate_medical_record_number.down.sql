@@ -1,0 +1,1 @@
+DROP FUNCTION emr_patient.generate_medical_record_number;
