@@ -12,3 +12,11 @@ type RecipeEntity struct {
 	Instruction     string     `db:"instruction"`
 	CreatedAt       *time.Time `db:"created_at"`
 }
+
+type RecipeRequest struct {
+	MedicineID  string `json:"medicine_id" validate:"required,max=255"`
+	Price       int    `json:"price" validate:"required"`
+	Quantity    int    `json:"quantity" validate:"required"`
+	Dosage      string `json:"dosage" validate:"required,max=255"`
+	Instruction string `json:"instruction" validate:"required,max=255"`
+}

@@ -35,7 +35,13 @@ func (r *Repository) Save(e *Entity) (*Entity, error) {
 
 	var result Entity
 	if rows.Next() {
-		err = rows.Scan(&result.ID, &result.Name)
+		err = rows.Scan(&result.ID,
+			&result.Name,
+			&result.Gender,
+			&result.Address,
+			&result.Phone,
+			&result.RegistrationNumber,
+			&result.SharingFee)
 		if err != nil {
 			return nil, err
 		}
@@ -69,7 +75,13 @@ func (r *Repository) Update(e *Entity) (*Entity, error) {
 
 	var result Entity
 	if rows.Next() {
-		err = rows.Scan(&result.ID, &result.Name)
+		err = rows.Scan(&result.ID,
+			&result.Name,
+			&result.Gender,
+			&result.Address,
+			&result.Phone,
+			&result.RegistrationNumber,
+			&result.SharingFee)
 		if err != nil {
 			return nil, err
 		}

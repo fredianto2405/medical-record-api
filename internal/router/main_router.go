@@ -7,6 +7,9 @@ import (
 	"medical-record-api/internal/auth"
 	"medical-record-api/internal/clinic"
 	"medical-record-api/internal/doctor"
+	emrHandler "medical-record-api/internal/medical_record/handler"
+	emrRepo "medical-record-api/internal/medical_record/repository"
+	emrService "medical-record-api/internal/medical_record/service"
 	medHandler "medical-record-api/internal/medicine/handler"
 	medRepo "medical-record-api/internal/medicine/repository"
 	medService "medical-record-api/internal/medicine/service"
@@ -141,6 +144,24 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	clinicService := clinic.NewService(clinicRepo)
 	clinicHandler := clinic.NewHandler(clinicService)
 	RegisterClinicRoutes(clinicGroup, clinicHandler)
+
+	// medical record routes
+	medicalRecordRepo := emrRepo.NewRepository(db)
+	nurseAssignmentRepo := emrRepo.NewNurseAssignmentRepository(db)
+	treatmentDetailRepo := emrRepo.NewTreatmentDetailRepository(db)
+	recipeRepo := emrRepo.NewRecipeRepository(db)
+	historyRepo := emrRepo.NewHistoryRepository(db)
+	statusRepo := emrRepo.NewStatusRepository(db)
+
+	medicalRecordService := emrService.NewService(db, medicalRecordRepo, nurseAssignmentRepo, treatmentDetailRepo, recipeRepo, historyRepo)
+	nurseAssignmentService := emrService.NewNurseAssignmentService(nurseAssignmentRepo)
+	treatmentDetailService := emrService.NewTreatmentDetailService(treatmentDetailRepo)
+	recipeService := emrService.NewRecipeService(recipeRepo)
+	statusService := emrService.NewStatusService(statusRepo)
+
+	medicalRecordGroup := r.Group("/api/v1/medical-records")
+	medicalRecordHandler := emrHandler.NewHandler(medicalRecordService, nurseAssignmentService, treatmentDetailService, recipeService, statusService)
+	RegisterMedicalRecordRoutes(medicalRecordGroup, medicalRecordHandler)
 
 	return r
 }
