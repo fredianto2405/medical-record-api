@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	"medical-record-api/internal/auth"
+	"medical-record-api/internal/clinic"
 	"medical-record-api/internal/doctor"
 	medHandler "medical-record-api/internal/medicine/handler"
 	medRepo "medical-record-api/internal/medicine/repository"
@@ -133,6 +134,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	paymentService := payService.NewService(paymentRepo)
 	paymentHandler := payHandler.NewHandler(paymentService)
 	RegisterPaymentRoutes(paymentGroup, paymentHandler)
+
+	// clinic routes
+	clinicGroup := r.Group("/api/v1/clinics")
+	clinicRepo := clinic.NewRepository(db)
+	clinicService := clinic.NewService(clinicRepo)
+	clinicHandler := clinic.NewHandler(clinicService)
+	RegisterClinicRoutes(clinicGroup, clinicHandler)
 
 	return r
 }
