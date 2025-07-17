@@ -154,7 +154,7 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	statusRepo := emrRepo.NewStatusRepository(db)
 
 	medicalRecordService := emrService.NewService(db, medicalRecordRepo, nurseAssignmentRepo, treatmentDetailRepo, recipeRepo, historyRepo)
-	nurseAssignmentService := emrService.NewNurseAssignmentService(nurseAssignmentRepo)
+	nurseAssignmentService := emrService.NewNurseAssignmentService(db, nurseAssignmentRepo)
 	treatmentDetailService := emrService.NewTreatmentDetailService(treatmentDetailRepo)
 	recipeService := emrService.NewRecipeService(recipeRepo)
 	statusService := emrService.NewStatusService(statusRepo)

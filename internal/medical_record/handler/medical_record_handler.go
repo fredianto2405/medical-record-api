@@ -104,6 +104,27 @@ func (h *Handler) DeleteMedicalRecord(c *gin.Context) {
 	response.Respond(c, http.StatusOK, true, constant.MsgDataDeleted, nil, nil)
 }
 
+func (h *Handler) AddNurseAssignment(c *gin.Context) {
+	id := c.Param("id")
+	var request model.NurseAssignmentRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.Error(err)
+		return
+	}
+
+	if err := errors.Validate.Struct(&request); err != nil {
+		c.Error(err)
+		return
+	}
+
+	if err := h.nurseAssignmentService.Create(id, request.NurseID); err != nil {
+		c.Error(err)
+		return
+	}
+
+	response.Respond(c, http.StatusCreated, true, constant.MsgDataSaved, nil, nil)
+}
+
 func (h *Handler) DeleteNurseAssignment(c *gin.Context) {
 	id := c.Param("id")
 	nurseID := c.Param("nurseId")
