@@ -1,0 +1,1618 @@
+type: collection.insomnia.rest/5.0
+name: Electronic Medical Record API
+meta:
+  id: wrk_fdc8322b7ed14866850eb1844c518ae3
+  created: 1752670921230
+  modified: 1752670921230
+  description: ""
+collection:
+  - name: Authentication
+    meta:
+      id: fld_f39099384d94453db0c447fe450de50d
+      created: 1752671012570
+      modified: 1752672867065
+      sortKey: -1752671012570
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/auth/login"
+        name: Login
+        meta:
+          id: req_f4c11f4608d54468820709eca7a4e212
+          created: 1752671236390
+          modified: 1752673682052
+          isPrivate: false
+          description: ""
+          sortKey: -1752671236390
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "owner@example.com",
+            	"password": "12345678"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: ""
+          afterResponse: |-
+            const jsonBody = insomnia.response.json();
+            const token = jsonBody.data.access_token;
+            const bearerToken = `Bearer ${token}`;
+            insomnia.environment.set("access_token", bearerToken);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Doctor Management
+    meta:
+      id: fld_633496d1fd1e493db5c446febcd04bde
+      created: 1752672026671
+      modified: 1752674439498
+      sortKey: -1752672026671
+      description: ""
+    children:
+      - name: Specialization
+        meta:
+          id: fld_a472dd3417b848ae9e3c8faf6601ffce
+          created: 1752672046585
+          modified: 1752674295725
+          sortKey: -1752672046585
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/specializations"
+            name: Get Specializations
+            meta:
+              id: req_8ff89a08468e4a3b8b0b6c257b11a9aa
+              created: 1752672050749
+              modified: 1752674297078
+              isPrivate: false
+              description: ""
+              sortKey: -1752672050749
+            method: GET
+            parameters:
+              - id: pair_7e1ae1ab150f4278b2673a6919dbde90
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_189bb9cdf540411cab94d3c1c3cbd01e
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_8f92debca4744d8d8bf4db4d476d0669
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_eb64a84edbb54fcead5559cb1beebf4e
+                name: search
+                value: anak
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            authentication:
+              type: none
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/specializations"
+            name: Add Specialization
+            meta:
+              id: req_47665d567f4c4999b03b44c74c10fc37
+              created: 1752672900400
+              modified: 1752673402649
+              isPrivate: false
+              description: ""
+              sortKey: -1752672900400
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Spesialis Jantung"
+                }
+            parameters:
+              - id: pair_40c3c3780f7a4101af8e9c8ff5daef1d
+                name: ""
+                value: ""
+                description: ""
+                disabled: true
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/specializations/e2ce35d4-f190-4d06-a833-5f0907165005"
+            name: Update Specialization
+            meta:
+              id: req_06a93589fc804d01b9a82145598806b5
+              created: 1752673235080
+              modified: 1752673770234
+              isPrivate: false
+              description: ""
+              sortKey: -1752673235080
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Spesialis Anak"
+                }
+            parameters:
+              - id: pair_2c1790bbdfaa465fb67ac9eb3c282782
+                name: ""
+                value: ""
+                description: ""
+                disabled: true
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/specializations/9574a08a-df57-47a3-a297-e85b595b034f"
+            name: Delete Specialization
+            meta:
+              id: req_852b56d6821341e8b709eea0e249e07e
+              created: 1752673798528
+              modified: 1752673902150
+              isPrivate: false
+              description: ""
+              sortKey: -1752673798528
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Doctor
+        meta:
+          id: fld_eda0fdac6e114d6cacb576eb0ce9fd64
+          created: 1752673921390
+          modified: 1752674439498
+          sortKey: -1752673921390
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/doctors"
+            name: Get Doctors
+            meta:
+              id: req_48ee1a0f0e5a4d90a41762bf1ee6c8d9
+              created: 1752673926911
+              modified: 1752674438556
+              isPrivate: false
+              description: ""
+              sortKey: -1752673926911
+            method: GET
+            parameters:
+              - id: pair_386317115a4b43d78de83cfe2ca61949
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_573acafdc30349048d13d9bcbd95afb1
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_018b20c605534bcdbbd5919f2f0022cf
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_3c8ef85a602342d9aa881f84c64095b5
+                name: search
+                value: endang
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/doctors"
+            name: Add Doctor
+            meta:
+              id: req_5a470a7a66424b86a8fce6fa9a0f41d8
+              created: 1752674065049
+              modified: 1752674252992
+              isPrivate: false
+              description: ""
+              sortKey: -1752674065049
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"email": "endang.k@example.com",
+                	"name": "Endang Kusumawati",
+                	"gender": "P",
+                	"specialization_id": "afd28dbe-1827-446e-ae61-9a7016e39666",
+                	"phone": "6281234567890",
+                	"address": "Wonogiri, Jawa Tengah",
+                	"registration_number": "DOC000001",
+                	"sharing_fee": 0.25
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/doctors/04b41903-0b4c-4445-bcdd-1d37b5f5994e"
+            name: Update Doctor
+            meta:
+              id: req_7d5fe7282dd74e16b8041d6fc26519f5
+              created: 1752674307347
+              modified: 1752674360794
+              isPrivate: false
+              description: ""
+              sortKey: -1752674307347
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"email": "endang.kusu@example.com",
+                	"name": "Endang Kusumawati",
+                	"gender": "P",
+                	"specialization_id": "afd28dbe-1827-446e-ae61-9a7016e39666",
+                	"phone": "6281234567890",
+                	"address": "Wonogiri, Jawa Tengah",
+                	"registration_number": "DOC000001",
+                	"sharing_fee": 0.25
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/doctors/04b41903-0b4c-4445-bcdd-1d37b5f5994e"
+            name: Delete Doctor
+            meta:
+              id: req_4342c9c7e9124959ad9cd8ef4cac60dd
+              created: 1752674394430
+              modified: 1752674427587
+              isPrivate: false
+              description: ""
+              sortKey: -1752674394430
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: Nurse Management
+    meta:
+      id: fld_ad8a8dc7487e47d591b71ab954b743f9
+      created: 1752674474668
+      modified: 1752675093521
+      sortKey: -1752674474668
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/nurses"
+        name: Get Nurses
+        meta:
+          id: req_b1b13a49ca00451786e01e8a44ab7f36
+          created: 1752674480768
+          modified: 1752674527811
+          isPrivate: false
+          description: ""
+          sortKey: -1752674480768
+        method: GET
+        parameters:
+          - id: pair_0419240cd8c74139b5850e9f82675299
+            name: pagination
+            value: "true"
+            description: ""
+            disabled: false
+          - id: pair_cf7b94215e3e446a9cfc0afbda9aa9cb
+            name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - id: pair_6dc9cf141fca46fc802a0a8f8543e6c0
+            name: limit
+            value: "10"
+            description: ""
+            disabled: false
+          - id: pair_a206ae59ea0f490eaede91ea9cb769a8
+            name: search
+            value: ""
+            description: ""
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/nurses"
+        name: Add Nurse
+        meta:
+          id: req_acc396c04c5945b29aa066500ca232f7
+          created: 1752674544118
+          modified: 1752674654344
+          isPrivate: false
+          description: ""
+          sortKey: -1752674544118
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Ariya Eka Prayoganingrum",
+            	"gender": "P",
+            	"phone": "6281234567890",
+            	"address": "Wonogiri, Jawa Tengah",
+            	"registration_number": "NUR000001",
+            	"sharing_fee": 0.15
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/nurses/4758f9b8-bcc6-4708-b18f-9444f6e382fe"
+        name: Update Nurse
+        meta:
+          id: req_6c2e39cebdd84f8e9bc5fb9ae1ea5c0c
+          created: 1752674957603
+          modified: 1752675033055
+          isPrivate: false
+          description: ""
+          sortKey: -1752674957603
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Suryaningsih",
+            	"gender": "P",
+            	"phone": "628123456789",
+            	"address": "Mampang Prapatan",
+            	"registration_number": "NUR000002",
+            	"sharing_fee": 0.05
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/nurses/4758f9b8-bcc6-4708-b18f-9444f6e382fe"
+        name: Delete Nurse
+        meta:
+          id: req_2cf5da65a0854e46a5e75e9c81e02565
+          created: 1752675048419
+          modified: 1752675082687
+          isPrivate: false
+          description: ""
+          sortKey: -1752675048419
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Master Menu
+    meta:
+      id: fld_253fc955d65248d9b0275774aba753dc
+      created: 1752675139097
+      modified: 1752675186413
+      sortKey: -1752675139097
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/menus"
+        name: Get Menu By Role
+        meta:
+          id: req_44de7a272e3849a589770270baf519cf
+          created: 1752675142031
+          modified: 1752675241644
+          isPrivate: false
+          description: ""
+          sortKey: -1752675142031
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Medicine Management
+    meta:
+      id: fld_bfb34c9d0e6845d6add29cd4ce90d9c2
+      created: 1752675275385
+      modified: 1752679234466
+      sortKey: -1752675275385
+      description: ""
+    children:
+      - name: Unit
+        meta:
+          id: fld_ce09552f293f4846b599af945b9ec23a
+          created: 1752675282135
+          modified: 1752678583659
+          sortKey: -1752675282135
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/medicines/units"
+            name: Get Units
+            meta:
+              id: req_f6edf46b1163413d861b730a739f4327
+              created: 1752678160457
+              modified: 1752678403834
+              isPrivate: false
+              description: ""
+              sortKey: -1752678160457
+            method: GET
+            parameters:
+              - id: pair_99bf5896512341d0a25960d02e7eda9c
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_055b90d6de0142558c5c6bc0e1f27d1a
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_7497954c7ca0441fbda7aaedcc0ac09c
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_cd0b0cb4d8f540388a9320c01e7793c0
+                name: search
+                value: ""
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/units"
+            name: Add Unit
+            meta:
+              id: req_0f82a3d217044f47b45fe2885f75b591
+              created: 1752678353135
+              modified: 1752678462492
+              isPrivate: false
+              description: ""
+              sortKey: -1752678353135
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Pcs"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/units/3d4e4728-bebf-4d72-8ff0-77903188f182"
+            name: Update Unit
+            meta:
+              id: req_54f9ffd6077d4467a3a0dc387785bb30
+              created: 1752678473711
+              modified: 1752678525613
+              isPrivate: false
+              description: ""
+              sortKey: -1752678473711
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Kaplet"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/units/3d4e4728-bebf-4d72-8ff0-77903188f182"
+            name: Delete Unit
+            meta:
+              id: req_b5eb7b95f6f64755b0a404ddae6f93eb
+              created: 1752678543506
+              modified: 1752678577991
+              isPrivate: false
+              description: ""
+              sortKey: -1752678543506
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Category
+        meta:
+          id: fld_7f1701f291034c81aa94b3c75bd341cd
+          created: 1752675290301
+          modified: 1752679064117
+          sortKey: -1752675290301
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/medicines/categories"
+            name: Get Categories
+            meta:
+              id: req_95073042918c437ab721974fd63d4261
+              created: 1752678598388
+              modified: 1752678650053
+              isPrivate: false
+              description: ""
+              sortKey: -1752678598388
+            method: GET
+            parameters:
+              - id: pair_164eb25fc4594a06800b209efe048cac
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_7fc28b2fcae445d98c384493ab22e30e
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_3f52f867e7684959bd348aebd8b577a9
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_edc846d6558f4ea2a0fc90b194d9f1f0
+                name: search
+                value: ""
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/categories"
+            name: Add Category
+            meta:
+              id: req_56e417a5e7c64c5e91449a247bca569a
+              created: 1752678668086
+              modified: 1752678712406
+              isPrivate: false
+              description: ""
+              sortKey: -1752678668086
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Paracetamol"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url
+              }}/v1/medicines/categories/63d5e2db-e534-4924-8fb5-1ac573c0eb69"
+            name: Update Category
+            meta:
+              id: req_0f8966b4e67c4c50ab27a633a157b7a8
+              created: 1752678724240
+              modified: 1752678781902
+              isPrivate: false
+              description: ""
+              sortKey: -1752678724240
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Oralit"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url
+              }}/v1/medicines/categories/63d5e2db-e534-4924-8fb5-1ac573c0eb69"
+            name: Delete Category
+            meta:
+              id: req_a8a9ab4b97f34ba7a8eaa3b858c61d67
+              created: 1752678798790
+              modified: 1752678829930
+              isPrivate: false
+              description: ""
+              sortKey: -1752678798790
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Medicine
+        meta:
+          id: fld_67e9136c664f46c5b08be9d6a56aee4e
+          created: 1752675299507
+          modified: 1752679234466
+          sortKey: -1752675299507
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/medicines"
+            name: Get Medicines
+            meta:
+              id: req_1088293720d74c969033054be7d772da
+              created: 1752678848044
+              modified: 1752678926862
+              isPrivate: false
+              description: ""
+              sortKey: -1752678848044
+            method: GET
+            parameters:
+              - id: pair_071b51d91a9746489488c88576f920da
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_4a9f16b0d77549a8b251e703e1ca0f36
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_a8faa27565a9466ab29161c3001c38f7
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_01f8f3eac1b24f7583af0563794802ab
+                name: search
+                value: "2"
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines"
+            name: Add Medicine
+            meta:
+              id: req_3f099c42cddd495fbb80210bed116870
+              created: 1752678931283
+              modified: 1752679094744
+              isPrivate: false
+              description: ""
+              sortKey: -1752678931283
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"code": "MED000002",
+                	"name": "Medicine 2",
+                	"category_id": "2c75e949-18d3-4e98-aa72-952e1d0f21cb",
+                	"unit_id": "9e54737e-2635-46b5-8c59-b93d81255170",
+                	"price": 15000,
+                	"stock": 100,
+                	"expiry_date": "2026-07-16",
+                	"dosage": "5mg"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/cbb3a2b7-1f66-44ec-a9bc-6fe3cf6978f8"
+            name: Update Medicine
+            meta:
+              id: req_a75d4d44c30e426bb19b86c4152bec4a
+              created: 1752679133102
+              modified: 1752679181802
+              isPrivate: false
+              description: ""
+              sortKey: -1752679133102
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"code": "MED000002",
+                	"name": "Contoh Obat",
+                	"category_id": "2c75e949-18d3-4e98-aa72-952e1d0f21cb",
+                	"unit_id": "9e54737e-2635-46b5-8c59-b93d81255170",
+                	"price": 15000,
+                	"stock": 100,
+                	"expiry_date": "2026-07-16",
+                	"dosage": "5mg"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/medicines/cbb3a2b7-1f66-44ec-a9bc-6fe3cf6978f8"
+            name: Delete Medicine
+            meta:
+              id: req_8b4e8c070a064bf5803768165f46c164
+              created: 1752679197622
+              modified: 1752679227970
+              isPrivate: false
+              description: ""
+              sortKey: -1752679197622
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: Patient Management
+    meta:
+      id: fld_138cf6ed783a46d7aa51bfa34d43912e
+      created: 1752679254595
+      modified: 1752680193401
+      sortKey: -1752679254595
+      description: ""
+    children:
+      - name: Patient
+        meta:
+          id: fld_b3735e692cc74c5b8859306934e8523d
+          created: 1752679286131
+          modified: 1752680193401
+          sortKey: -1752679286131
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/patients"
+            name: Get Patients
+            meta:
+              id: req_7d499598abff45baae8c44a95d262735
+              created: 1752679309042
+              modified: 1752679354834
+              isPrivate: false
+              description: ""
+              sortKey: -1752679309042
+            method: GET
+            parameters:
+              - id: pair_01acaf2a181f4289ba139f70af6f89b0
+                name: pagination
+                value: "true"
+                description: ""
+                disabled: false
+              - id: pair_3991849aab92425487d1e6eb7b313453
+                name: page
+                value: "1"
+                description: ""
+                disabled: false
+              - id: pair_7cc860a19507455b8a261c24e0498c11
+                name: limit
+                value: "10"
+                description: ""
+                disabled: false
+              - id: pair_24ce6d3455c1443c86fb6ce349350822
+                name: search
+                value: ""
+                description: ""
+                disabled: true
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/patients"
+            name: Add Patient
+            meta:
+              id: req_6f9745c1b8544934b9998b55ab9c7cb3
+              created: 1752679380828
+              modified: 1752679533243
+              isPrivate: false
+              description: ""
+              sortKey: -1752679380828
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Carlos",
+                	"gender": "L",
+                	"birth_date": "1999-01-01",
+                	"blood_type": "AB",
+                	"address": "Mampang Prapatan, Jakarta Selatan",
+                	"phone": "6281234567890",
+                	"email": "carlos@example.com",
+                	"history_of_illness": "-",
+                	"allergies": "-",
+                	"identity_type": "KTP",
+                	"identity_number": "1234567890"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/patients/a5e82d70-2e22-4f83-9830-9ca1742a1ba9"
+            name: Update Patient
+            meta:
+              id: req_1a5d1b20722f4a5bb3f5ecfc0190a1d0
+              created: 1752679550518
+              modified: 1752679601258
+              isPrivate: false
+              description: ""
+              sortKey: -1752679550518
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "Carlos",
+                	"gender": "L",
+                	"birth_date": "1999-01-01",
+                	"blood_type": "AB",
+                	"address": "Mampang Prapatan, Jakarta Selatan",
+                	"phone": "6281234567891",
+                	"email": "carlos@example.com",
+                	"history_of_illness": "-",
+                	"allergies": "-",
+                	"identity_type": "KTP",
+                	"identity_number": "1234567890"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/v1/patients/a5e82d70-2e22-4f83-9830-9ca1742a1ba9"
+            name: Delete Patient
+            meta:
+              id: req_9a3889603fb3472fb35003a09d5693e0
+              created: 1752679621093
+              modified: 1752679650089
+              isPrivate: false
+              description: ""
+              sortKey: -1752679621093
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Emergency Contact
+        meta:
+          id: fld_79db62fb6a04472fbb920898883336ce
+          created: 1752679294411
+          modified: 1752679966345
+          sortKey: -1752679294411
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/patients/emergency-contact"
+            name: Add Emergency Contact
+            meta:
+              id: req_4c68b367b4e440c2bc5240d5552935dc
+              created: 1752679715640
+              modified: 1752679861029
+              isPrivate: false
+              description: ""
+              sortKey: -1752679715640
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"patient_id": "a2238dfe-2046-4ddd-b5b4-9bfed4bec5b8",
+                	"name": "Jimmy",
+                	"phone": "6281234567890",
+                	"relation": "Orang Tua"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url
+              }}/v1/patients/emergency-contact/a2238dfe-2046-4ddd-b5b4-9bfed4be\
+              c5b8"
+            name: Delete Emergency Contact
+            meta:
+              id: req_d3fcca9479d64b03954e63909ffefb91
+              created: 1752679878688
+              modified: 1752679964789
+              isPrivate: false
+              description: ""
+              sortKey: -1752679878688
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Insurance
+        meta:
+          id: fld_df784f03e6954904824ce8c0821b7737
+          created: 1752679302547
+          modified: 1752680189809
+          sortKey: -1752679302547
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/v1/patients/insurance"
+            name: Add Insurance
+            meta:
+              id: req_fcfe22bc43454076a4dd6dfcd1bee8c9
+              created: 1752679976943
+              modified: 1752680114742
+              isPrivate: false
+              description: ""
+              sortKey: -1752679976943
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"patient_id": "a2238dfe-2046-4ddd-b5b4-9bfed4bec5b8",
+                	"insurance_id": "1c2e7824-6932-4d56-bd90-da26652249a3",
+                	"insurance_number": "INS000001"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url
+              }}/v1/patients/insurance/a2238dfe-2046-4ddd-b5b4-9bfed4bec5b8"
+            name: Delete Insurance
+            meta:
+              id: req_6aa93f92ce9b44f58f21f2b3494ed915
+              created: 1752680140868
+              modified: 1752680187382
+              isPrivate: false
+              description: ""
+              sortKey: -1752680140868
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.3.0
+            scripts:
+              preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+                insomnia.environment.get(\"access_token\") });"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: Treatment Management
+    meta:
+      id: fld_d1db103b603e41c0a39f1daf54619140
+      created: 1752680254422
+      modified: 1752680530458
+      sortKey: -1752680254422
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/treatments"
+        name: Get Treatments
+        meta:
+          id: req_b81a1860f9d340d2865bfcf0acbd3db2
+          created: 1752680263719
+          modified: 1752680328085
+          isPrivate: false
+          description: ""
+          sortKey: -1752680263719
+        method: GET
+        parameters:
+          - id: pair_3912de30c9ba42dfbd141d2864b6e8a7
+            name: pagination
+            value: "true"
+            description: ""
+            disabled: false
+          - id: pair_cf3f3bef60dc41f783edd390fb1e488e
+            name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - id: pair_8d74a79ca44c407096b4a05b879d43aa
+            name: limit
+            value: "10"
+            description: ""
+            disabled: false
+          - id: pair_8a7a65f2cf1a4df2b8944b345a286c7a
+            name: search
+            value: ""
+            description: ""
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/treatments"
+        name: Add Treatment
+        meta:
+          id: req_bb68df771a354e9f931d324f6a971b28
+          created: 1752680342347
+          modified: 1752680407067
+          isPrivate: false
+          description: ""
+          sortKey: -1752680342347
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Medical Check Up",
+            	"price": 150000,
+            	"description": "Lorem ipsum"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/treatments/b576ba24-fc6f-42a9-83f5-785f43c841a7"
+        name: Update Treatment
+        meta:
+          id: req_7baec6f8298f4f74963f6c3211a47005
+          created: 1752680418323
+          modified: 1752680470802
+          isPrivate: false
+          description: ""
+          sortKey: -1752680418323
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Medical Check Up",
+            	"price": 110000,
+            	"description": "Lorem ipsum"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/treatments/b576ba24-fc6f-42a9-83f5-785f43c841a7"
+        name: Delete Treatment
+        meta:
+          id: req_6efb7a351e2a4e3a9f10d3f40ea41c89
+          created: 1752680487365
+          modified: 1752680525499
+          isPrivate: false
+          description: ""
+          sortKey: -1752680487365
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Insurance Management
+    meta:
+      id: fld_8156deb1e7f34c7bbf73ccd63ac19bb5
+      created: 1752680561064
+      modified: 1752680828539
+      sortKey: -1752680561064
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/insurances"
+        name: Get Insurances
+        meta:
+          id: req_192131414af14e0ba2a54386ad57ad62
+          created: 1752680564649
+          modified: 1752680619292
+          isPrivate: false
+          description: ""
+          sortKey: -1752680564649
+        method: GET
+        parameters:
+          - id: pair_c0379b9a8b0645198f75cb87cf314194
+            name: pagination
+            value: "true"
+            description: ""
+            disabled: false
+          - id: pair_755292228a2d438f8034dcebc38e6bc1
+            name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - id: pair_1fc3eac14a4c47a2a09a963782ec1bf8
+            name: limit
+            value: "10"
+            description: ""
+            disabled: false
+          - id: pair_abb45ad0787b48a6aae186e59adcaef3
+            name: search
+            value: ""
+            description: ""
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/insurances"
+        name: Add Insurance
+        meta:
+          id: req_2c2707a3084b44ad8b186d40ca079c22
+          created: 1752680629320
+          modified: 1752680722013
+          isPrivate: false
+          description: ""
+          sortKey: -1752680629320
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Asuransi Kita",
+            	"code": "INS000001",
+            	"contact": "6281234567890",
+            	"email": "asuransi.kita@example.com",
+            	"is_active": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/insurances/0e7cec1a-8fb9-4a68-9fa3-9aeb6fcf1b71"
+        name: Update Insurance
+        meta:
+          id: req_add93907f2c34ce19b5d9afb0fa35d34
+          created: 1752680736675
+          modified: 1752680782984
+          isPrivate: false
+          description: ""
+          sortKey: -1752680736675
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Asuransi Kita",
+            	"code": "INS000002",
+            	"contact": "6281234567890",
+            	"email": "asuransi.kita@example.com",
+            	"is_active": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/v1/insurances/0e7cec1a-8fb9-4a68-9fa3-9aeb6fcf1b71"
+        name: Delete Insurance
+        meta:
+          id: req_2a3b55a68e194fa5a8aedd04fd05e4c4
+          created: 1752680791904
+          modified: 1752680823490
+          isPrivate: false
+          description: ""
+          sortKey: -1752680791904
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a7a8c628cb96e7c83488e46d2b2004995dfef47e
+    created: 1752670921232
+    modified: 1752680828536
+environments:
+  name: Base Environment
+  meta:
+    id: env_a7a8c628cb96e7c83488e46d2b2004995dfef47e
+    created: 1752670921231
+    modified: 1752680828538
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080/api
+    access_token: Bearer
+      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5MjRiZmY3LTZhN2EtNDBkMi1iOTVhLWMzZTcyZDk4OWEyOSIsImVtYWlsIjoib3duZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoib3duZXIiLCJpc3MiOiJteWFwcCIsImV4cCI6MTc1Mjc1OTI2NywiaWF0IjoxNzUyNjcyODY3fQ.e-7hyQKDgjDLzgjVicm39IbOFmInVjXJ76MAeoT-zKk
+    specialization_id: ""
