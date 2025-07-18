@@ -20,3 +20,14 @@ type RecipeRequest struct {
 	Dosage      string `json:"dosage" validate:"required,max=255"`
 	Instruction string `json:"instruction" validate:"required,max=255"`
 }
+
+type RecipeDTO struct {
+	MedicineID   string `json:"medicine_id" db:"medicine_id"`
+	MedicineName string `json:"medicine_name" db:"medicine_name"`
+	CategoryName string `json:"category_name" db:"category_name"`
+	UnitName     string `json:"unit_name" db:"unit_name"`
+	Price        int    `json:"price" db:"price"`
+	Quantity     int    `json:"quantity" db:"quantity"`
+	Dosage       string `json:"dosage" db:"dosage"`
+	Instruction  string `json:"instruction" db:"instruction"`
+}

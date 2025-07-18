@@ -27,3 +27,22 @@ func (r *HistoryRepository) Delete(medicalRecordID string) error {
 	_, err := r.db.Exec(deleteQuery, medicalRecordID)
 	return err
 }
+
+func (r *HistoryRepository) FindByMedicalRecordID(medicalRecordID string) ([]*model.HistoryDTO, error) {
+	var histories []*model.HistoryDTO
+
+	dataQuery := `select mrh.status_id,
+			mrs."name" as status_name,
+			to_char(mrh.created_at, 'YYYY-MM-DD HH24:MI') as "timestamp"
+		from emr_core.medical_record_histories mrh 
+		join emr_core.medical_record_statuses mrs on mrs.id = mrh.status_id
+		where mrh.medical_record_id = $1
+		order by mrh.created_at desc`
+
+	err := r.db.Select(&histories, dataQuery, medicalRecordID)
+	if err != nil {
+		return nil, err
+	}
+
+	return histories, nil
+}

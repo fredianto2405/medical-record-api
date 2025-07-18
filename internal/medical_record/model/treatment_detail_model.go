@@ -14,3 +14,9 @@ type TreatmentRequest struct {
 	TreatmentID string `json:"treatment_id" validate:"required,max=255"`
 	Price       int    `json:"price" validate:"required"`
 }
+
+type TreatmentDTO struct {
+	TreatmentID   string `json:"treatment_id" db:"treatment_id"`
+	TreatmentName string `json:"treatment_name" db:"treatment_name"`
+	Price         int    `json:"price" db:"price"`
+}

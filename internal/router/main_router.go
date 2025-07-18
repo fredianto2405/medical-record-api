@@ -155,8 +155,8 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 
 	medicalRecordService := emrService.NewService(db, medicalRecordRepo, nurseAssignmentRepo, treatmentDetailRepo, recipeRepo, historyRepo)
 	nurseAssignmentService := emrService.NewNurseAssignmentService(db, nurseAssignmentRepo)
-	treatmentDetailService := emrService.NewTreatmentDetailService(treatmentDetailRepo)
-	recipeService := emrService.NewRecipeService(recipeRepo)
+	treatmentDetailService := emrService.NewTreatmentDetailService(db, treatmentDetailRepo)
+	recipeService := emrService.NewRecipeService(db, recipeRepo)
 	statusService := emrService.NewStatusService(statusRepo)
 
 	medicalRecordGroup := r.Group("/api/v1/medical-records")

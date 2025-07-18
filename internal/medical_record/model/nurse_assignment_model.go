@@ -12,3 +12,8 @@ type NurseAssignmentEntity struct {
 type NurseAssignmentRequest struct {
 	NurseID string `json:"nurse_id" validate:"required,max=255"`
 }
+
+type NurseDTO struct {
+	NurseID   string `json:"nurse_id" db:"nurse_id"`
+	NurseName string `json:"nurse_name" db:"nurse_name"`
+}

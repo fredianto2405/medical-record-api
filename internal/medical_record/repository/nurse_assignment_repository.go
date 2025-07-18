@@ -35,3 +35,19 @@ func (r *NurseAssignmentRepository) DeleteAll(medicalRecordID string) error {
 	_, err := r.db.Exec(deleteQuery, medicalRecordID)
 	return err
 }
+
+func (r *NurseAssignmentRepository) FindByMedicalRecordID(medicalRecordID string) ([]*model.NurseDTO, error) {
+	var nurses []*model.NurseDTO
+
+	dataQuery := `select rna.nurse_id, n."name" as nurse_name
+		from emr_core.record_nurse_assignments rna 
+		join emr_nurse.nurses n on n.id = rna.nurse_id 
+		where rna.medical_record_id = $1`
+
+	err := r.db.Select(&nurses, dataQuery, medicalRecordID)
+	if err != nil {
+		return nil, err
+	}
+
+	return nurses, nil
+}
