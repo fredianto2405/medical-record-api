@@ -23,6 +23,7 @@ import (
 	payService "medical-record-api/internal/payment/service"
 	"medical-record-api/internal/specialization"
 	"medical-record-api/internal/treatment"
+	"medical-record-api/internal/user"
 	"medical-record-api/pkg/errors"
 	"time"
 )
@@ -47,11 +48,18 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	r.Use(errors.ErrorHandler())
 
 	// auth routes
-	userRepo := auth.NewRepository(db)
-	authService := auth.NewService(userRepo)
+	authRepo := auth.NewRepository(db)
+	authService := auth.NewService(authRepo)
 	authHandler := auth.NewHandler(authService)
 	authGroup := r.Group("/api/v1/auth")
 	RegisterAuthRoutes(authGroup, authHandler)
+
+	// user routes
+	userRepo := user.NewRepository(db)
+	userService := user.NewService(userRepo)
+	userHandler := user.NewHandler(userService)
+	userGroup := r.Group("/api/v1/users")
+	RegisterUserRoutes(userGroup, userHandler)
 
 	// menu routes
 	menuRepo := menu.NewRepository(db)

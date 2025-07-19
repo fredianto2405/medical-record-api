@@ -5,4 +5,5 @@ const (
 	MsgInvalidPassword   = "invalid password"
 	MsgLoginSuccess      = "login successful"
 	MsgFailedGenerateJWT = "failed to generate token"
+	MsgEmailExists       = "email already exists"
 )

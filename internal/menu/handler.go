@@ -5,6 +5,7 @@ import (
 	"medical-record-api/internal/constant"
 	"medical-record-api/pkg/jwt"
 	"medical-record-api/pkg/response"
+	"medical-record-api/pkg/role"
 	"net/http"
 )
 
@@ -23,7 +24,7 @@ func (h *Handler) GetByRoleID(c *gin.Context) {
 		return
 	}
 
-	roleID := resolveRoleID(claims.Role)
+	roleID := role.Resolve(claims.Role)
 	menus, err := h.service.GetByRoleID(roleID)
 	if err != nil {
 		response.Respond(c, http.StatusInternalServerError, false, err.Error(), nil, nil)
@@ -31,19 +32,4 @@ func (h *Handler) GetByRoleID(c *gin.Context) {
 	}
 
 	response.Respond(c, http.StatusOK, true, constant.MsgDataRetrieved, menus, nil)
-}
-
-func resolveRoleID(role string) int {
-	switch role {
-	case constant.RoleOwner:
-		return constant.RoleIdOwner
-	case constant.RoleManager:
-		return constant.RoleIdManager
-	case constant.RoleAdmin:
-		return constant.RoleIdAdmin
-	case constant.RoleDoctor:
-		return constant.RoleIdDoctor
-	default:
-		return constant.InvalidRoleId
-	}
 }

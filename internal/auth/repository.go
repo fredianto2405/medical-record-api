@@ -21,7 +21,8 @@ func (r *Repository) FindUserByEmail(email string) (*UserDTO, error) {
 		   r.name role 
 		from emr_auth.users u 
 		join emr_auth.roles r on r.id = u.role_id 
-		where email = $1`
+		where email = $1 
+		and deleted_at isnull`
 	err := r.db.Get(&user, dataQuery, email)
 
 	return &user, err
