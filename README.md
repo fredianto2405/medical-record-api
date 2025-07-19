@@ -13,6 +13,7 @@ It is designed to handle various core operations such as patient registration, m
 - Treatment Management
 - Payment Management
 - Medical Record Management
+- User Management
 
 ## Tech Stack
 - Golang
