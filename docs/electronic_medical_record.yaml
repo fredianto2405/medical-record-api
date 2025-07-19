@@ -10,7 +10,7 @@ collection:
     meta:
       id: fld_f39099384d94453db0c447fe450de50d
       created: 1752671012570
-      modified: 1752842757902
+      modified: 1752941685525
       sortKey: -1752671012570
       description: ""
     children:
@@ -2355,21 +2355,71 @@ collection:
             send: true
             store: true
           rebuildPath: true
+  - name: Upload
+    meta:
+      id: fld_baed2ee82c7745d9a243046861c5fa8b
+      created: 1752941570817
+      modified: 1752941939664
+      sortKey: -1752941570817
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/v1/upload"
+        name: Upload File
+        meta:
+          id: req_cc4ced4e569b433d92125120bcd7c7a1
+          created: 1752941573792
+          modified: 1752941936959
+          isPrivate: false
+          description: ""
+          sortKey: -1752941573792
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - id: pair_b90046d1f1c34d68b1ad724655b062e2
+              name: file
+              value: ""
+              description: ""
+              disabled: false
+              type: file
+              fileName: /home/freddy/Documents/Multimedia/Pas Foto Nikah/IMG_2980.PNG
+        parameters:
+          - id: pair_a556dcde4e6748a8a05fb89c978ea20c
+            name: ""
+            value: ""
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
     id: jar_a7a8c628cb96e7c83488e46d2b2004995dfef47e
     created: 1752670921232
-    modified: 1752928302985
+    modified: 1752941939662
 environments:
   name: Base Environment
   meta:
     id: env_a7a8c628cb96e7c83488e46d2b2004995dfef47e
     created: 1752670921231
-    modified: 1752928302985
+    modified: 1752941939664
     isPrivate: false
   data:
     base_url: http://localhost:8080/api
     access_token: Bearer
-      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5MjRiZmY3LTZhN2EtNDBkMi1iOTVhLWMzZTcyZDk4OWEyOSIsImVtYWlsIjoib3duZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoib3duZXIiLCJpc3MiOiJteWFwcCIsImV4cCI6MTc1MjkyOTE1NywiaWF0IjoxNzUyODQyNzU3fQ.Rfp3XnhJabWsxXsVKj5nxs9VXgJz9OmxNVh1Z9JqWeI
+      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5MjRiZmY3LTZhN2EtNDBkMi1iOTVhLWMzZTcyZDk4OWEyOSIsImVtYWlsIjoib3duZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoib3duZXIiLCJpc3MiOiJteWFwcCIsImV4cCI6MTc1MzAyODA4NSwiaWF0IjoxNzUyOTQxNjg1fQ.uGIxG3dVezfWoumMZ24Izmh2MFYsd9qNoNUsqRSP2XQ
     specialization_id: ""
