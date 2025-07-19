@@ -2252,7 +2252,7 @@ collection:
     meta:
       id: fld_77d357fb1cc342cfaf516af4189e0de4
       created: 1752892846558
-      modified: 1752893112010
+      modified: 1752928302997
       sortKey: -1752892846558
       description: ""
     children:
@@ -2315,18 +2315,58 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: "{{ _.base_url }}/v1/users"
+        name: Get Users
+        meta:
+          id: req_926abdc546214d229985de31cd84305d
+          created: 1752927207086
+          modified: 1752927240743
+          isPrivate: false
+          description: ""
+          sortKey: -1752927207086
+        method: GET
+        parameters:
+          - id: pair_c7f63d3f6bbf43eda7f97905cff10742
+            name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - id: pair_5d2665d831de46519e01a296ba0eca45
+            name: limit
+            value: "10"
+            description: ""
+            disabled: false
+          - id: pair_0f14a91c33d840e7a61d688eb64760f0
+            name: search
+            value: ""
+            description: ""
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        scripts:
+          preRequest: "insomnia.request.addHeader({key: 'Authorization', value:
+            insomnia.environment.get(\"access_token\") });"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
     id: jar_a7a8c628cb96e7c83488e46d2b2004995dfef47e
     created: 1752670921232
-    modified: 1752893112008
+    modified: 1752928302985
 environments:
   name: Base Environment
   meta:
     id: env_a7a8c628cb96e7c83488e46d2b2004995dfef47e
     created: 1752670921231
-    modified: 1752893112009
+    modified: 1752928302985
     isPrivate: false
   data:
     base_url: http://localhost:8080/api

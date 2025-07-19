@@ -18,3 +18,10 @@ type Request struct {
 	Role     string `json:"role"`
 	IsActive bool   `json:"is_active"`
 }
+
+type DTO struct {
+	ID       string `json:"id" db:"id"`
+	Email    string `json:"email" db:"email"`
+	Role     string `json:"role" db:"role"`
+	IsActive bool   `json:"is_active" db:"is_active"`
+}

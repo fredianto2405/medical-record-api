@@ -1,6 +1,8 @@
 package user
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+)
 
 type Repository struct {
 	db *sqlx.DB
@@ -33,4 +35,39 @@ func (r *Repository) EmailExists(email string) (bool, error) {
 	}
 
 	return exists, nil
+}
+
+func (r *Repository) FindAllPaginated(page, limit int, search string) ([]*DTO, int, error) {
+	var users []*DTO
+	var total int
+
+	searchPattern := "%" + search + "%"
+
+	baseQuery := `where u.deleted_at isnull and u.email ilike $1`
+
+	countQuery := `select count(0) 
+		from emr_auth.users u
+		join emr_auth.roles r on r.id = u.role_id ` + baseQuery
+	err := r.db.Get(&total, countQuery, searchPattern)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * limit
+	dataQuery := `select u.id, 
+			u.email,
+			r."name" as role,
+			u.is_active
+		from emr_auth.users u
+		join emr_auth.roles r on r.id = u.role_id
+		` + baseQuery + `
+		order by u.email asc
+		limit $2 offset $3`
+	err = r.db.Select(&users, dataQuery, searchPattern, limit, offset)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return users, total, nil
 }

@@ -8,6 +8,7 @@ import (
 
 func RegisterUserRoutes(rg *gin.RouterGroup, handler *user.Handler) {
 	rg.Use(middleware.JWTAuthMiddleware())
+	rg.GET("", handler.GetUsers)
 	rg.POST("", handler.AddUser)
 	rg.DELETE("/:id", handler.DeleteUser)
 }

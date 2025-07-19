@@ -29,3 +29,7 @@ func (s *Service) Delete(id string) error {
 func (s *Service) EmailExists(email string) (bool, error) {
 	return s.repo.EmailExists(email)
 }
+
+func (s *Service) GetAllPaginated(page, limit int, search string) ([]*DTO, int, error) {
+	return s.repo.FindAllPaginated(page, limit, search)
+}

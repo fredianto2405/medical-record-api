@@ -17,6 +17,26 @@ func NewHandler(service *Service) *Handler {
 	return &Handler{service: service}
 }
 
+func (h *Handler) GetUsers(c *gin.Context) {
+	search := c.DefaultQuery("search", "")
+
+	var pagination response.Pagination
+	if err := c.ShouldBindQuery(&pagination); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, constant.MsgInvalidPagination, nil, nil)
+		return
+	}
+
+	users, total, err := h.service.GetAllPaginated(pagination.Page, pagination.Limit, search)
+
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	meta := response.NewMeta(total, pagination.Page, pagination.Limit)
+	response.Respond(c, http.StatusOK, true, constant.MsgDataRetrieved, users, meta)
+}
+
 func sanitizeRequest(request *Request) {
 	request.Email = sanitize.SanitizeStrict(request.Email)
 }
