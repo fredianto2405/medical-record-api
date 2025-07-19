@@ -21,3 +21,6 @@
 
 # logs
 *.log
+
+# uploads
+/uploads

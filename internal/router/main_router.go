@@ -23,6 +23,7 @@ import (
 	payService "medical-record-api/internal/payment/service"
 	"medical-record-api/internal/specialization"
 	"medical-record-api/internal/treatment"
+	"medical-record-api/internal/upload"
 	"medical-record-api/internal/user"
 	"medical-record-api/pkg/errors"
 	"time"
@@ -170,6 +171,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	medicalRecordGroup := r.Group("/api/v1/medical-records")
 	medicalRecordHandler := emrHandler.NewHandler(medicalRecordService, nurseAssignmentService, treatmentDetailService, recipeService, statusService)
 	RegisterMedicalRecordRoutes(medicalRecordGroup, medicalRecordHandler)
+
+	// upload routes
+	uploadGroup := r.Group("/api/v1/upload")
+	uploadRepo := upload.NewRepository(db)
+	uploadService := upload.NewService(uploadRepo)
+	uploadHandler := upload.NewHandler(uploadService)
+	RegisterUploadRoutes(uploadGroup, uploadHandler)
 
 	return r
 }

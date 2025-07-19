@@ -1,0 +1,1 @@
+DROP TABLE emr_clinic.uploaded_files;
