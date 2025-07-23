@@ -2,28 +2,20 @@
 FROM golang:1.24.4 AS builder
 WORKDIR /app
 
-# copy go mod and sum files
 COPY go.mod go.sum ./
 RUN go mod download
 
-# copy source code
 COPY . .
 
-# build app
 RUN go build -o app ./cmd/main.go
 
-# run stage
-FROM debian:bullseye-slim
+# run stage (pakai base image yg cocok dgn GLIBC 2.34)
+FROM debian:bookworm-slim
 WORKDIR /app
 
-# copy the compiled binary from builder
 COPY --from=builder /app/app .
-
-# copy .env
 COPY .env .
 
-# expose port
 EXPOSE 8080
 
-# run app
 CMD ["./app"]
