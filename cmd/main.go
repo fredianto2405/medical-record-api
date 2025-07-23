@@ -18,5 +18,5 @@ func main() {
 	db := config.NewDB()
 	r := router.SetupRouter(db)
 	port := os.Getenv("PORT")
-	r.Run(":" + port)
+	r.Run("0.0.0.0:" + port)
 }
