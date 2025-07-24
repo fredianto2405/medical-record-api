@@ -18,7 +18,9 @@ func (r *Repository) FindUserByEmail(email string) (*UserDTO, error) {
 	dataQuery := `select u.id, 
 		   u.email, 
 		   u.password, 
-		   r.name role 
+		   r.name role,
+		   u.failed_login_attempts,
+		   u.is_locked
 		from emr_auth.users u 
 		join emr_auth.roles r on r.id = u.role_id 
 		where email = $1 
@@ -26,4 +28,25 @@ func (r *Repository) FindUserByEmail(email string) (*UserDTO, error) {
 	err := r.db.Get(&user, dataQuery, email)
 
 	return &user, err
+}
+
+func (r *Repository) UpdateFailedLoginByEmail(email string, isLocked bool) error {
+	updateQuery := `update emr_auth.users 
+		set failed_login_attempts = failed_login_attempts + 1,
+			last_failed_login = now(), 
+			is_locked = $1
+		where email = $2`
+	_, err := r.db.Exec(updateQuery, isLocked, email)
+	return err
+}
+
+func (r *Repository) ResetFailedLoginByEmail(email string) error {
+	updateQuery := `update emr_auth.users 
+		set failed_login_attempts = 0, 
+			last_failed_login = null,
+			is_locked = false
+		where email = $1 
+		and failed_login_attempts > 0`
+	_, err := r.db.Exec(updateQuery, email)
+	return err
 }

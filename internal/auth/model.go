@@ -1,10 +1,12 @@
 package auth
 
 type UserDTO struct {
-	ID       string `db:"id"`
-	Email    string `db:"email"`
-	Password string `db:"password"`
-	Role     string `db:"role"`
+	ID                  string `db:"id"`
+	Email               string `db:"email"`
+	Password            string `db:"password"`
+	Role                string `db:"role"`
+	FailedLoginAttempts int    `db:"failed_login_attempts"`
+	IsLocked            bool   `db:"is_locked"`
 }
 
 type LoginRequest struct {

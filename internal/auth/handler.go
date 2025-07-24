@@ -21,20 +21,20 @@ func NewHandler(service *Service) *Handler {
 func (h *Handler) Login(c *gin.Context) {
 	var request LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
-		c.Error(err)
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
 		return
 	}
 
 	sanitizeLoginRequest(&request)
 
 	if err := errors.Validate.Struct(request); err != nil {
-		c.Error(err)
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
 		return
 	}
 
 	user, err := h.service.Login(&request)
 	if err != nil {
-		c.Error(err)
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
 		return
 	}
 
