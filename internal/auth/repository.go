@@ -50,3 +50,9 @@ func (r *Repository) ResetFailedLoginByEmail(email string) error {
 	_, err := r.db.Exec(updateQuery, email)
 	return err
 }
+
+func (r *Repository) UpdatePassword(email string, password string) error {
+	updateQuery := `update emr_auth.users set password = $1 where email = $2`
+	_, err := r.db.Exec(updateQuery, password, email)
+	return err
+}

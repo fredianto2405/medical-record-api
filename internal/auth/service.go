@@ -42,3 +42,32 @@ func (s *Service) Login(request *LoginRequest) (*UserDTO, error) {
 
 	return user, nil
 }
+
+func (s *Service) ChangePassword(email string, request *ChangePasswordRequest) error {
+	user, err := s.repo.FindUserByEmail(email)
+	if err != nil {
+		return fmt.Errorf(constant.MsgUserNotFound)
+	}
+
+	isPasswordMatch := password.CheckPasswordHash(request.OldPassword, user.Password)
+	if !isPasswordMatch {
+		return fmt.Errorf(constant.MsgInvalidPassword)
+	}
+
+	if request.NewPassword != request.ConfirmNewPassword {
+		return fmt.Errorf(constant.MsgInvalidConfirmPassword)
+	}
+
+	var hashNewPassword string
+	hashNewPassword, err = password.HashPassword(request.NewPassword)
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdatePassword(user.Email, hashNewPassword)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

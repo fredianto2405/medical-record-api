@@ -18,6 +18,11 @@ func NewHandler(service *Service) *Handler {
 	return &Handler{service}
 }
 
+func sanitizeLoginRequest(request *LoginRequest) {
+	request.Email = sanitize.SanitizeStrict(request.Email)
+	request.Password = sanitize.SanitizeStrict(request.Password)
+}
+
 func (h *Handler) Login(c *gin.Context) {
 	var request LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -53,7 +58,31 @@ func (h *Handler) Login(c *gin.Context) {
 	response.Respond(c, http.StatusOK, true, constant.MsgLoginSuccess, data, nil)
 }
 
-func sanitizeLoginRequest(request *LoginRequest) {
-	request.Email = sanitize.SanitizeStrict(request.Email)
-	request.Password = sanitize.SanitizeStrict(request.Password)
+func (h *Handler) ChangePassword(c *gin.Context) {
+	claims, ok := jwt.GetUserClaims(c)
+	if !ok {
+		response.Respond(c, http.StatusUnauthorized, false, constant.MsgUserNotFoundInContext, nil, nil)
+		return
+	}
+
+	email := claims.Email
+
+	var request ChangePasswordRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	if err := errors.Validate.Struct(request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	err := h.service.ChangePassword(email, &request)
+	if err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	response.Respond(c, http.StatusOK, true, constant.MsgChangePasswordSuccess, nil, nil)
 }

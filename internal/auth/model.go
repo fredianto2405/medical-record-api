@@ -19,3 +19,9 @@ type LoginDTO struct {
 	AccessToken string `json:"access_token"`
 	Role        string `json:"role"`
 }
+
+type ChangePasswordRequest struct {
+	OldPassword        string `json:"old_password"`
+	NewPassword        string `json:"new_password"`
+	ConfirmNewPassword string `json:"confirm_new_password"`
+}
