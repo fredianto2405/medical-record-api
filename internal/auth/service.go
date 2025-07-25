@@ -60,7 +60,7 @@ func (s *Service) ChangePassword(email string, request *ChangePasswordRequest) e
 
 	err = password.Validate(request.NewPassword)
 	if err != nil {
-		return fmt.Errorf(constant.MsgInvalidPassword)
+		return err
 	}
 
 	var hashNewPassword string
