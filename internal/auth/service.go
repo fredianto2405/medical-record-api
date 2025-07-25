@@ -58,6 +58,11 @@ func (s *Service) ChangePassword(email string, request *ChangePasswordRequest) e
 		return fmt.Errorf(constant.MsgInvalidConfirmPassword)
 	}
 
+	err = password.Validate(request.NewPassword)
+	if err != nil {
+		return fmt.Errorf(constant.MsgInvalidPassword)
+	}
+
 	var hashNewPassword string
 	hashNewPassword, err = password.HashPassword(request.NewPassword)
 	if err != nil {
