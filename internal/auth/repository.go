@@ -56,3 +56,32 @@ func (r *Repository) UpdatePassword(email string, password string) error {
 	_, err := r.db.Exec(updateQuery, password, email)
 	return err
 }
+
+func (r *Repository) SavePasswordReset(userID string) error {
+	insertQuery := `insert into emr_auth.password_resets(user_id, token, expired_at, created_at)
+		values($1, uuid_generate_v4(), now() + interval '30 minutes', now())`
+	_, err := r.db.Exec(insertQuery, userID)
+	return err
+}
+
+func (r *Repository) FindPasswordResetByToken(token string) (string, error) {
+	dataQuery := `select u.email 
+		from emr_auth.password_resets pr 
+		join emr_auth.users u on u.id = pr.user_id 
+		where pr.token = $1 
+		and pr.used = false 
+		and pr.expired_at > now()`
+
+	var email string
+	err := r.db.Get(&email, dataQuery, token)
+
+	return email, err
+}
+
+func (r *Repository) UpdatePasswordResetUsed(token string) error {
+	updateQuery := `update emr_auth.password_resets 
+		set used = true 
+		where token = $1`
+	_, err := r.db.Exec(updateQuery, token)
+	return err
+}

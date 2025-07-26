@@ -86,3 +86,44 @@ func (h *Handler) ChangePassword(c *gin.Context) {
 
 	response.Respond(c, http.StatusOK, true, constant.MsgChangePasswordSuccess, nil, nil)
 }
+
+func (h *Handler) ForgotPassword(c *gin.Context) {
+	var request ForgotPasswordRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	if err := errors.Validate.Struct(request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	if err := h.service.ForgotPassword(request.Email); err != nil {
+		response.Respond(c, http.StatusInternalServerError, false, err.Error(), nil, nil)
+		return
+	}
+
+	response.Respond(c, http.StatusOK, true, constant.MsgForgotPassword, nil, nil)
+}
+
+func (h *Handler) ResetPassword(c *gin.Context) {
+	token := c.Param("token")
+	var request ResetPasswordRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	if err := errors.Validate.Struct(request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	if err := h.service.ResetPassword(token, &request); err != nil {
+		response.Respond(c, http.StatusBadRequest, false, err.Error(), nil, nil)
+		return
+	}
+
+	response.Respond(c, http.StatusOK, true, constant.MsgResetPasswordSuccess, nil, nil)
+}

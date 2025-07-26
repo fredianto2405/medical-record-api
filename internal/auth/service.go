@@ -76,3 +76,47 @@ func (s *Service) ChangePassword(email string, request *ChangePasswordRequest) e
 
 	return nil
 }
+
+func (s *Service) ForgotPassword(email string) error {
+	user, _ := s.repo.FindUserByEmail(email)
+	if user != nil {
+		if err := s.repo.SavePasswordReset(user.ID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *Service) ResetPassword(token string, request *ResetPasswordRequest) error {
+	email, err := s.repo.FindPasswordResetByToken(token)
+	if err != nil {
+		return fmt.Errorf(constant.MsgInvalidTokenResetPassword)
+	}
+
+	if request.NewPassword != request.ConfirmNewPassword {
+		return fmt.Errorf(constant.MsgInvalidConfirmPassword)
+	}
+
+	err = password.Validate(request.NewPassword)
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdatePasswordResetUsed(token)
+	if err != nil {
+		return err
+	}
+
+	var hashNewPassword string
+	hashNewPassword, err = password.HashPassword(request.NewPassword)
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdatePassword(email, hashNewPassword)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
