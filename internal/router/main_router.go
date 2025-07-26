@@ -7,6 +7,7 @@ import (
 	"medical-record-api/internal/auth"
 	"medical-record-api/internal/clinic"
 	"medical-record-api/internal/doctor"
+	"medical-record-api/internal/email"
 	emrHandler "medical-record-api/internal/medical_record/handler"
 	emrRepo "medical-record-api/internal/medical_record/repository"
 	emrService "medical-record-api/internal/medical_record/service"
@@ -27,6 +28,7 @@ import (
 	"medical-record-api/internal/user"
 	"medical-record-api/pkg/errors"
 	"medical-record-api/pkg/logger"
+	"os"
 	"time"
 )
 
@@ -52,10 +54,21 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	// error handler
 	r.Use(errors.ErrorHandler())
 
+	// email scheduler
+	emailRepo := email.NewRepository(db)
+	emailService := email.NewService(emailRepo)
+	emailCfg := email.Config{
+		SMTPHost: os.Getenv("MAIL_SMTP_HOST"),
+		SMTPPort: os.Getenv("MAIL_SMTP_PORT"),
+		Sender:   os.Getenv("MAIL_SENDER_EMAIL"),
+		Password: os.Getenv("MAIL_SENDER_PASSWORD"),
+	}
+	email.StartEmailScheduler(emailService, emailCfg)
+
 	// auth routes
 	authRepo := auth.NewRepository(db)
 	authService := auth.NewService(authRepo)
-	authHandler := auth.NewHandler(authService)
+	authHandler := auth.NewHandler(authService, emailService)
 	authGroup := r.Group("/api/v1/auth")
 	RegisterAuthRoutes(authGroup, authHandler)
 

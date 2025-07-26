@@ -29,6 +29,10 @@ func (s *Service) SendEmail(cfg Config, to, subject, body string, isHtml bool) e
 	return smtp.SendMail(addr, auth, cfg.Sender, []string{to}, []byte(msg))
 }
 
+func (s *Service) QueueEmail(recipient, subject, body string, isHTML bool) error {
+	return s.repo.QueueEmail(recipient, subject, body, isHTML)
+}
+
 func (s *Service) SendPendingEmails(cfg Config) {
 	log := logger.Log
 	log.Info("========== Start sending pending emails ==========")

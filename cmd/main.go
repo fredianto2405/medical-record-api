@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"medical-record-api/config"
-	"medical-record-api/internal/email"
 	"medical-record-api/internal/router"
 	"os"
 
@@ -20,17 +19,6 @@ func main() {
 	// init db and routes
 	db := config.NewDB()
 	r := router.SetupRouter(db)
-
-	// email scheduler
-	emailRepo := email.NewRepository(db)
-	emailService := email.NewService(emailRepo)
-	emailCfg := email.Config{
-		SMTPHost: os.Getenv("MAIL_SMTP_HOST"),
-		SMTPPort: os.Getenv("MAIL_SMTP_PORT"),
-		Sender:   os.Getenv("MAIL_SENDER_EMAIL"),
-		Password: os.Getenv("MAIL_SENDER_PASSWORD"),
-	}
-	email.StartEmailScheduler(emailService, emailCfg)
 
 	// run app
 	port := os.Getenv("PORT")

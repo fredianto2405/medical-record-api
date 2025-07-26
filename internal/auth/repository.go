@@ -57,11 +57,14 @@ func (r *Repository) UpdatePassword(email string, password string) error {
 	return err
 }
 
-func (r *Repository) SavePasswordReset(userID string) error {
+func (r *Repository) SavePasswordReset(userID string) (string, error) {
 	insertQuery := `insert into emr_auth.password_resets(user_id, token, expired_at, created_at)
-		values($1, uuid_generate_v4(), now() + interval '30 minutes', now())`
-	_, err := r.db.Exec(insertQuery, userID)
-	return err
+		values($1, uuid_generate_v4(), now() + interval '30 minutes', now())
+		returning token`
+
+	var token string
+	err := r.db.QueryRow(insertQuery, userID).Scan(&token)
+	return token, err
 }
 
 func (r *Repository) FindPasswordResetByToken(token string) (string, error) {
