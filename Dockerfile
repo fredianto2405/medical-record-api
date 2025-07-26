@@ -14,8 +14,9 @@ RUN go build -o app ./cmd/main.go
 
 # run stage (pakai base image yg cocok dgn GLIBC 2.34)
 FROM debian:bookworm-slim
-WORKDIR /app
+RUN apt update && apt install -y ca-certificates
 
+WORKDIR /app
 COPY --from=builder /app/app .
 COPY .env .
 
