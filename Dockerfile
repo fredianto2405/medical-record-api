@@ -1,5 +1,8 @@
 # build stage
 FROM golang:1.24.4 AS builder
+
+RUN apk add --no-cache ca-certificates
+
 WORKDIR /app
 
 COPY go.mod go.sum ./
