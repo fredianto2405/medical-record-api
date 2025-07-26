@@ -2,6 +2,7 @@ package email
 
 import (
 	"fmt"
+	"medical-record-api/pkg/logger"
 	"net/smtp"
 )
 
@@ -29,29 +30,54 @@ func (s *Service) SendEmail(cfg Config, to, subject, body string, isHtml bool) e
 }
 
 func (s *Service) SendPendingEmails(cfg Config) {
-	fmt.Println("Start sending pending emails...")
+	log := logger.Log
+	log.Info("========== Start sending pending emails ==========")
 
 	emails, err := s.repo.FindAllPendingEmail()
 	if err != nil {
-		fmt.Println("Error fetching queue: ", err)
+		log.WithError(err).Error("Error fetching queue: ")
 		return
 	}
 
+	if len(emails) == 0 {
+		log.Info("No pending emails found")
+		log.Info("========== End sending pending emails ==========")
+		return
+	}
+
+	log.Infof("Found %d pending emails", len(emails))
+
 	for _, email := range emails {
-		fmt.Println("Sending email with ID: ", email.ID)
+		log.WithFields(map[string]interface{}{
+			"queue_id": email.ID,
+			"to":       email.Recipient,
+			"subject":  email.Subject,
+		}).Info("Sending email")
+
 		err = s.SendEmail(cfg, email.Recipient, email.Subject, email.Body, email.IsHTML)
 		if err != nil {
-			err = s.repo.UpdateQueueFailed(email.ID, err.Error())
-			if err != nil {
-				fmt.Println("Error updating failed queue: ", err)
+			log.WithFields(map[string]interface{}{
+				"queue_id": email.ID,
+				"to":       email.Recipient,
+				"error":    err.Error(),
+			}).Error("Failed to send email")
+
+			errUpdate := s.repo.UpdateQueueFailed(email.ID, err.Error())
+			if errUpdate != nil {
+				log.Error("Error updating failed queue: ", errUpdate.Error())
 			}
 		} else {
-			err = s.repo.UpdateQueueSuccess(email.ID)
-			if err != nil {
-				fmt.Println("Error updating success queue: ", err)
+			log.WithFields(map[string]interface{}{
+				"queue_id": email.ID,
+				"to":       email.Recipient,
+			}).Info("Email sent successfully")
+
+			errUpdate := s.repo.UpdateQueueSuccess(email.ID)
+			if errUpdate != nil {
+				log.Error("Error updating success queue: ", errUpdate.Error())
 			}
 		}
 	}
 
-	fmt.Println("End sending pending emails...")
+	log.Info("========== End sending pending emails ==========")
 }

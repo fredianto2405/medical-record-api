@@ -26,12 +26,16 @@ import (
 	"medical-record-api/internal/upload"
 	"medical-record-api/internal/user"
 	"medical-record-api/pkg/errors"
+	"medical-record-api/pkg/logger"
 	"time"
 )
 
 func SetupRouter(db *sqlx.DB) *gin.Engine {
 	// init validator
 	errors.InitValidator()
+
+	// init logger
+	logger.InitLogger()
 
 	r := gin.Default()
 
