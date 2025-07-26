@@ -1,5 +1,5 @@
 # build stage (alphine)
-FROM golang:1.24.4-alphine AS builder
+FROM golang:1.24.4-alpine AS builder
 
 RUN apk add --no-cache ca-certificates
 
