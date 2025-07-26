@@ -32,10 +32,10 @@ It is designed to handle various core operations such as patient registration, m
 ### Clone & Run
 
 ```bash
-  git clone https://github.com/fredianto2405/medical-record-api.git
-  cd medical-record-api
-  go mod tidy
-  go run cmd/main.go
+git clone https://github.com/fredianto2405/medical-record-api.git
+cd medical-record-api
+go mod tidy
+go run cmd/main.go
 ```
 
 ### Environment Variables
